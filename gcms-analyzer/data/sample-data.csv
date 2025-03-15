@@ -1,0 +1,16 @@
+Metabolite,RetentionTime,Intensity
+Glucose,2.5,850000
+Fructose,3.2,720000
+Pyruvate,4.1,450000
+Citrate,5.3,380000
+Malate,6.2,290000
+Lactate,7.0,520000
+Succinate,8.1,410000
+Fumarate,9.3,280000
+Alpha-Ketoglutarate,10.2,330000
+Oxaloacetate,11.5,270000
+Alanine,12.4,480000
+Glutamate,13.8,390000
+Aspartate,14.7,310000
+Glycine,15.9,420000
+Serine,16.8,350000

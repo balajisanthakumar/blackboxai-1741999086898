@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GCMS Data Analyzer</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Cytoscape.js for pathway visualization -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.23.0/cytoscape.min.js"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- PapaParse for CSV parsing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-gray-50">
+    <header class="bg-blue-600 text-white py-6 mb-8">
+        <div class="container mx-auto px-4">
+            <h1 class="text-3xl font-bold">GCMS Data Analyzer</h1>
+            <p class="mt-2">Analyze GCMS data with metabolite mapping and PubChem integration</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4">
+        <!-- File Upload Section -->
+        <section class="mb-8 p-6 bg-white rounded-lg shadow-md">
+            <h2 class="text-xl font-semibold mb-4">Upload GCMS Data</h2>
+            <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center upload-section">
+                <input type="file" id="fileInput" accept=".csv" class="hidden">
+                <div class="flex justify-center items-center space-x-4">
+                    <label for="fileInput" class="cursor-pointer bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                        Choose File or Drag & Drop
+                    </label>
+                    <button onclick="loadSampleData()" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                        Load Sample Data
+                    </button>
+                </div>
+                <p class="mt-2 text-sm text-gray-500">Supported format: CSV</p>
+            </div>
+            <div id="uploadStatus" class="mt-4"></div>
+        </section>
+
+        <!-- Data Visualization Section -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <!-- Chromatogram -->
+            <section class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-xl font-semibold mb-4">Chromatogram</h2>
+                <div class="chart-container">
+                    <canvas id="chromatogramChart"></canvas>
+                </div>
+            </section>
+
+            <!-- Mass Spectra -->
+            <section class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-xl font-semibold mb-4">Mass Spectra</h2>
+                <div class="chart-container">
+                    <canvas id="massSpectraChart"></canvas>
+                </div>
+            </section>
+        </div>
+
+        <!-- Pathway Visualization Section -->
+        <section class="mb-8 bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-semibold mb-4">Metabolic Pathway Visualization</h2>
+            <div id="pathwayVisualization" class="w-full h-96 border border-gray-200 rounded-lg"></div>
+        </section>
+
+        <!-- Results Table Section -->
+        <section class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-semibold mb-4">Analysis Results</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full table-auto">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Metabolite
+                                <span class="block text-gray-400 normal-case text-xs">Name</span>
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Retention Time
+                                <span class="block text-gray-400 normal-case text-xs">min</span>
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Intensity
+                                <span class="block text-gray-400 normal-case text-xs">counts</span>
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Gene Locus ID
+                                <span class="block text-gray-400 normal-case text-xs">Associated gene</span>
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                PubChem ID
+                                <span class="block text-gray-400 normal-case text-xs">Compound identifier</span>
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Properties
+                                <span class="block text-gray-400 normal-case text-xs">Formula & MW</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultsTableBody" class="bg-white divide-y divide-gray-200">
+                        <!-- Results will be dynamically inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-8 mt-16">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">About</h3>
+                    <p class="text-gray-400">GCMS Data Analyzer is a web-based tool for analyzing Gas Chromatography-Mass Spectrometry data with metabolite mapping and pathway visualization.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Features</h3>
+                    <ul class="text-gray-400">
+                        <li>Chromatogram Analysis</li>
+                        <li>Mass Spectra Visualization</li>
+                        <li>Metabolite Mapping</li>
+                        <li>Pathway Visualization</li>
+                        <li>PubChem Integration</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Resources</h3>
+                    <ul class="text-gray-400">
+                        <li><a href="#" class="hover:text-white">Documentation</a></li>
+                        <li><a href="#" class="hover:text-white">Sample Data</a></li>
+                        <li><a href="#" class="hover:text-white">API Reference</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Application Scripts -->
+    <script src="js/fileHandler.js"></script>
+    <script src="js/chromatogramAnalyzer.js"></script>
+    <script src="js/metaboliteMapper.js"></script>
+    <script src="js/pubchemIntegration.js"></script>
+    <script src="js/networkVisualizer.js"></script>
+    <script src="js/test.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

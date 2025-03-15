@@ -1,0 +1,162 @@
+/* Loading spinner animation */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(59, 130, 246, 0.2);
+    border-radius: 50%;
+    border-top-color: #3B82F6;
+    animation: spin 1s linear infinite;
+}
+
+/* Drag and drop styles */
+.drag-over {
+    border-color: #3B82F6 !important;
+    background-color: rgba(59, 130, 246, 0.1);
+}
+
+/* Chart containers */
+.chart-container {
+    height: 400px;
+    position: relative;
+}
+
+/* Network visualization container */
+#pathwayVisualization {
+    height: 500px;
+    border: 1px solid #E5E7EB;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Table styles */
+.table-container {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+/* Status message styles */
+.status-message {
+    transition: all 0.3s ease;
+}
+
+/* Progress bar */
+.progress-bar {
+    height: 4px;
+    background-color: #E5E7EB;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background-color: #3B82F6;
+    transition: width 0.3s ease;
+}
+
+/* Tooltip styles */
+.tooltip {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+/* Network controls */
+.network-controls {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.network-controls button {
+    background-color: white;
+    border: 1px solid #E5E7EB;
+    border-radius: 4px;
+    padding: 4px 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.network-controls button:hover {
+    background-color: #F3F4F6;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+    .chart-container {
+        height: 300px;
+    }
+
+    #pathwayVisualization {
+        height: 400px;
+    }
+
+    .table-container {
+        max-height: 400px;
+    }
+}
+
+/* Animation for status transitions */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.status-transition {
+    animation: fadeIn 0.3s ease;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #F3F4F6;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #94A3B8;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #64748B;
+}
+
+/* Focus styles */
+button:focus, 
+input:focus {
+    outline: none;
+    ring: 2px;
+    ring-color: #3B82F6;
+}
+
+/* Accessibility */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
